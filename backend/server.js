@@ -8,7 +8,7 @@ const authRouter = require('./routes/auth');
 const authenticateToken = require('./middleware/authMiddleware');
 const app = express();
 const subscriptionsRouter = require('./routes/subscriptions');
-
+const userRouter = require('./routes/user');
 app.use(cors({
   origin: 'http://localhost:5173',
   credentials: true,
@@ -18,6 +18,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use('/auth', authRouter);
 app.use('/api/subscriptions', subscriptionsRouter);
+app.use('/api/user', userRouter);
 
 app.get('/health', (req, res) => {
   res.json({ status: 'ok' });

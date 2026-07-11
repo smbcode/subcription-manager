@@ -34,8 +34,7 @@ async function fetchRecentReceipts(userId) {
 
   const searchResponse = await gmail.users.messages.list({
     userId: 'me',
-    q: 'subject:(receipt OR invoice OR subscription OR renewal OR payment OR billing) newer_than:90d',    //q: 'newer_than:7d',
-    maxResults: 20,
+    q: `subject:(receipt OR invoice OR subscription OR renewal OR payment OR billing) -subject:"Upcoming subscription renewals" newer_than:90d`,    maxResults: 20,
   });
 
   const messages = searchResponse.data.messages || [];
