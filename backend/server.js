@@ -6,13 +6,18 @@ const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 const authRouter = require('./routes/auth');
 const authenticateToken = require('./middleware/authMiddleware');
-
 const app = express();
-app.use(cors());
+const subscriptionsRouter = require('./routes/subscriptions');
+
+app.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true,
+}));
 app.use(helmet());
 app.use(express.json());
 app.use(cookieParser());
 app.use('/auth', authRouter);
+app.use('/api/subscriptions', subscriptionsRouter);
 
 app.get('/health', (req, res) => {
   res.json({ status: 'ok' });
