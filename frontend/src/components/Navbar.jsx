@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 function Navbar() {
   const [email, setEmail] = useState('');
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/user/me', { withCredentials: true })
+    axios.get(`${API_URL}/api/user/me`, { withCredentials: true })
       .then(res => setEmail(res.data.email))
       .catch(() => setEmail(''));
   }, []);
