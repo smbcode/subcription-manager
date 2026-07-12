@@ -91,6 +91,16 @@ h1, h2, h3 {
   margin-top: 8px;
 }
 
+.dashboard-about {
+  font-size: 14px;
+  color: var(--color-text-muted);
+  max-width: 560px;
+  line-height: 1.5;
+  margin-top: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--color-border);
+}
+
 .dashboard-summary strong {
   color: var(--color-text);
 }
@@ -118,6 +128,11 @@ h1, h2, h3 {
 
 .subscription-card.urgency-danger {
   border-left-color: var(--color-danger);
+}
+
+.subscription-card.urgency-overdue {
+  border-left-color: var(--color-text-muted);
+  opacity: 0.7;
 }
 
 .subscription-name {
@@ -148,6 +163,30 @@ h1, h2, h3 {
 .status-badge.needs_review {
   background: var(--color-warning-bg);
   color: var(--color-warning);
+}
+
+.cancel-button {
+  background: none;
+  border: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.cancel-button:hover {
+  border-color: var(--color-danger);
+  color: var(--color-danger);
+}
+
+.status-badge.cancelled {
+  background: #F1F5F9;
+  color: var(--color-text-muted);
+}
+
+.subscription-card.status-cancelled {
+  opacity: 0.6;
 }
 
 /* Login */

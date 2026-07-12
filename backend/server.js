@@ -10,7 +10,7 @@ const app = express();
 const subscriptionsRouter = require('./routes/subscriptions');
 const userRouter = require('./routes/user');
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: ['http://localhost:5173', 'https://subcriptionmanagershaunak.vercel.app'],
   credentials: true,
 }));
 app.use(helmet());

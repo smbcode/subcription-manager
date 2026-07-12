@@ -14,4 +14,22 @@ router.get('/', authenticateToken, async (req, res) => {
   }
 });
 
+router.patch('/:id/cancel', authenticateToken, async (req, res) => {
+  try {
+    const subscription = await Subscription.findOneAndUpdate(
+      { _id: req.params.id, userId: req.user.userId }, // ensures users can only cancel their own
+      { status: 'cancelled' },
+      { new: true }
+    );
+
+    if (!subscription) {
+      return res.status(404).json({ error: 'Subscription not found' });
+    }
+
+    res.json(subscription);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to cancel subscription' });
+  }
+});
+
 module.exports = router;

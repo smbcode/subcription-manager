@@ -49,12 +49,22 @@ async function saveSubscriptionFromEmail(userId, message) {
   const amount = extractAmount(text);
   const nextRenewalDate = extractDate(text);
 
-  const existing = await Subscription.findOne({ sourceEmailId: message.id });
-  if (existing) return existing;
+  const existingByEmail = await Subscription.findOne({ sourceEmailId: message.id });
+  if (existingByEmail) return existingByEmail;
+  const existingByService = await Subscription.findOne({ userId, serviceName });
+
+  if (existingByService) {
+    existingByService.amount = amount || existingByService.amount;
+    existingByService.nextRenewalDate = nextRenewalDate || existingByService.nextRenewalDate;
+    existingByService.sourceEmailId = message.id;
+    existingByService.status = (amount && nextRenewalDate) ? 'active' : existingByService.status;
+    await existingByService.save();
+    return existingByService;
+  }
 
   const status = (amount && nextRenewalDate) ? 'active' : 'needs_review';
 
-  const subscription = await Subscription.create({
+  return await Subscription.create({
     userId,
     serviceName,
     amount,
@@ -62,8 +72,6 @@ async function saveSubscriptionFromEmail(userId, message) {
     sourceEmailId: message.id,
     status,
   });
-
-  return subscription;
 }
 
 module.exports = { getPlainTextBody, extractAmount, extractDate, extractServiceName, saveSubscriptionFromEmail };
