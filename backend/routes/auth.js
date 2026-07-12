@@ -12,17 +12,15 @@ const oauth2Client = new google.auth.OAuth2(
   process.env.GOOGLE_REDIRECT_URI
 );
 
-// Step A: redirect user to Google's consent screen
 router.get('/google', (req, res) => {
   const url = oauth2Client.generateAuthUrl({
-    access_type: 'offline', // gives us a refresh token
+    access_type: 'offline',
     prompt: 'consent',
     scope: ['https://www.googleapis.com/auth/gmail.readonly', 'profile', 'email'],
   });
   res.redirect(url);
 });
 
-// Step B: Google redirects back here with a code
 router.get('/google/callback', async (req, res) => {
   try {
     const { code } = req.query;
@@ -49,7 +47,7 @@ router.get('/google/callback', async (req, res) => {
     const jwtToken = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
 
     res.cookie('token', jwtToken, { httpOnly: true, maxAge: 7 * 24 * 60 * 60 * 1000 });
-    res.redirect('http://localhost:5173/dashboard'); // frontend URL, we'll build this Day 6
+    res.redirect(`${process.env.FRONTEND_URL}/dashboard`);
   } catch (err) {
     console.error('OAuth callback error:', err);
     res.status(500).json({ error: 'Authentication failed' });
